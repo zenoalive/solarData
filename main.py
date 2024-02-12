@@ -27,6 +27,7 @@ date_range = [start_date + datetime.timedelta(days=i) for i in range((end_date -
 # Calculate Mercury's position for each date
 mercury_latitudes = []
 mercury_longitudes = []
+planets_latirtdes = [], []
 
 
 # Get heliocentric coordinates of earth
@@ -307,13 +308,16 @@ if __name__ == "__main__":
         planet_class = getattr(ephem, planet_name)
         planet_instances[planet_name] = planet_class()
         planet_instances[planet_name].compute(date)
-        print(f"{planet_name}:")
-        print(f"Heliocentric Ecliptic Longitude by me: {heliocentric_longitudes[planet_name]}")
-        print(f"Heliocentric Ecliptic Longitude by them: {math.radians(planet_instances[planet_name].hlon)}")
-        print(f"Heliocentric Ecliptic Latitude by me: {heliocentric_latitudes[planet_name]}")
-        print(f"Heliocentric Ecliptic Latitude by them: {math.radians(planet_instances[planet_name].hlat)}")
-        print(f"Distance from Sun: {heliocentric_distances[planet_name]}")
-        print()
+        for date in date_range:
+            print()
+
+        # print(f"{planet_name}:")
+        # print(f"Heliocentric Ecliptic Longitude by me: {heliocentric_longitudes[planet_name]}")
+        # print(f"Heliocentric Ecliptic Longitude by them: {math.radians(planet_instances[planet_name].hlon)}")
+        # print(f"Heliocentric Ecliptic Latitude by me: {heliocentric_latitudes[planet_name]}")
+        # print(f"Heliocentric Ecliptic Latitude by them: {math.radians(planet_instances[planet_name].hlat)}")
+        # print(f"Distance from Sun: {heliocentric_distances[planet_name]}")
+        # print()
 
     geocentric_coordinates = {}
 
