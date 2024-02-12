@@ -301,7 +301,20 @@ if __name__ == "__main__":
         # print()
 
 
-## Geocentric part
+## Geocentric 
+    planet_instances = {}
+    for planet_name in planets:
+        planet_class = getattr(ephem, planet_name)
+        planet_instances[planet_name] = planet_class()
+        planet_instances[planet_name].compute(date)
+        print(f"{planet_name}:")
+        print(f"Heliocentric Ecliptic Longitude by me: {heliocentric_longitudes[planet_name]}")
+        print(f"Heliocentric Ecliptic Longitude by them: {math.radians(planet_instances[planet_name].hlon)}")
+        print(f"Heliocentric Ecliptic Latitude by me: {heliocentric_latitudes[planet_name]}")
+        print(f"Heliocentric Ecliptic Latitude by them: {math.radians(planet_instances[planet_name].hlat)}")
+        print(f"Distance from Sun: {heliocentric_distances[planet_name]}")
+        print()
+
     geocentric_coordinates = {}
 
     for planet_name in planets:
@@ -319,10 +332,10 @@ if __name__ == "__main__":
         geocentric_coordinates[planet_name] = (geocentric_longitude, geocentric_latitude, geocentric_distance)
 
     # Print the geocentric coordinates
-    for planet_name, coordinates in geocentric_coordinates.items():
-        print(f"{planet_name}:")
-        print(f"Geocentric Ecliptic Longitude: {coordinates[0]}")
-        print(f"Geocentric Ecliptic Latitude: {coordinates[1]}")
-        print(f"Distance from Earth: {coordinates[2]}")
-        print()
+    # for planet_name, coordinates in geocentric_coordinates.items():
+    #     print(f"{planet_name}:")
+    #     print(f"Geocentric Ecliptic Longitude: {coordinates[0]}")
+    #     print(f"Geocentric Ecliptic Latitude: {coordinates[1]}")
+    #     print(f"Distance from Earth: {coordinates[2]}")
+    #     print()
 print('It worked')
