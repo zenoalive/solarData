@@ -2,6 +2,7 @@
 import ephem
 import math
 import time
+import matplotlib.pyplot as plt
 # Constants
 G = 6.67430e-11  # Gravitational constant (m^3/kg/s^2)
 M_sun = 1.989e30  # Mass of the Sun (kg)
@@ -15,6 +16,8 @@ argument_of_perihelion_values = {
     'Uranus': 170.96424,
     'Neptune': 44.97135
 }
+colors = ['red', 'blue', 'green', 'orange', 'purple', 'yellow', 'cyan']
+
 
 # Get heliocentric coordinates of earth
 def calculate_earth_heliocentric_coordinates(observer):
@@ -243,6 +246,21 @@ if __name__ == "__main__":
         heliocentric_distances[planet_name] = calculate_distance(a,eccentricity, true_anomaly )
         heliocentric_longitudes[planet_name] = calculate_ecliptic_longitude(true_anomaly, w)
         heliocentric_latitudes[planet_name] = calculate_ecliptic_latitude()    
+    
+    # Plot the positions of the planets with colors and varying marker sizes based on distance
+    plt.figure(figsize=(10, 6))
+    for i, name in enumerate(planets):
+        plt.scatter(heliocentric_longitudes[name], heliocentric_latitudes[name], label=name, color=colors[i], s=100 * heliocentric_distances[name], alpha=0.7)
+
+    # Add labels and title
+    plt.xlabel('Geocentric Ecliptic Longitude (degrees)')
+    plt.ylabel('Geocentric Ecliptic Latitude (degrees)')
+    plt.title('Positions of Planets Relative to Earth')
+
+# Add a legend to the plot
+    plt.legend()
+    plt.show()
+
    
 
 
