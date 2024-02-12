@@ -3,6 +3,7 @@ import ephem
 import math
 import time
 import matplotlib.pyplot as plt
+import datetime
 # Constants
 G = 6.67430e-11  # Gravitational constant (m^3/kg/s^2)
 M_sun = 1.989e30  # Mass of the Sun (kg)
@@ -17,6 +18,15 @@ argument_of_perihelion_values = {
     'Neptune': 44.97135
 }
 colors = ['red', 'blue', 'green', 'orange', 'purple', 'yellow', 'cyan']
+
+# Define the range of dates
+start_date = datetime.datetime(2023, 1, 1)
+end_date = datetime.datetime(2023, 12, 31)
+date_range = [start_date + datetime.timedelta(days=i) for i in range((end_date - start_date).days + 1)]
+
+# Calculate Mercury's position for each date
+mercury_latitudes = []
+mercury_longitudes = []
 
 
 # Get heliocentric coordinates of earth
@@ -235,6 +245,8 @@ if __name__ == "__main__":
     heliocentric_distances = {}
     heliocentric_longitudes = {}
     heliocentric_latitudes = {}
+    mercury = ephem.Mercury()
+
     for planet_name in planets :
         planet = getattr(ephem, planet_name)()
         eccentric_anomaly = calculate_eccentric_anomaly(planet, observer)  # Calculate eccentric anomaly first
@@ -246,20 +258,34 @@ if __name__ == "__main__":
         heliocentric_distances[planet_name] = calculate_distance(a,eccentricity, true_anomaly )
         heliocentric_longitudes[planet_name] = calculate_ecliptic_longitude(true_anomaly, w)
         heliocentric_latitudes[planet_name] = calculate_ecliptic_latitude()    
+    for date in date_range:
+        mercury.compute(date)
+        mercury_latitudes.append(mercury.hlat)
+        mercury_longitudes.append(mercury.hlon)
+    
+    # Plot Mercury's orbital path
+    plt.figure(figsize=(8, 6))
+    plt.scatter(mercury_longitudes, mercury_latitudes, marker='.', color='gray', label='Mercury')
+    plt.xlabel('Heliocentric Longitude (degrees)')
+    plt.ylabel('Heliocentric Latitude (degrees)')
+    plt.title('Orbital Path of Mercury in 2023')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
     
     # Plot the positions of the planets with colors and varying marker sizes based on distance
-    plt.figure(figsize=(10, 6))
-    for i, name in enumerate(planets):
-        plt.scatter(heliocentric_longitudes[name], heliocentric_latitudes[name], label=name, color=colors[i], s=100 * heliocentric_distances[name], alpha=0.7)
+#     plt.figure(figsize=(10, 6))
+#     for i, name in enumerate(planets):
+#         plt.scatter(heliocentric_longitudes[name], heliocentric_latitudes[name], label=name, color=colors[i], s=100 * heliocentric_distances[name], alpha=0.7)
 
-    # Add labels and title
-    plt.xlabel('Geocentric Ecliptic Longitude (degrees)')
-    plt.ylabel('Geocentric Ecliptic Latitude (degrees)')
-    plt.title('Positions of Planets Relative to Earth')
+#     # Add labels and title
+#     plt.xlabel('Geocentric Ecliptic Longitude (degrees)')
+#     plt.ylabel('Geocentric Ecliptic Latitude (degrees)')
+#     plt.title('Positions of Planets Relative to Earth')
 
-# Add a legend to the plot
-    plt.legend()
-    plt.show()
+# # Add a legend to the plot
+#     plt.legend()
+#     plt.show()
 
    
 
