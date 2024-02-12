@@ -281,4 +281,4 @@ if __name__ == "__main__":
         print(f"Geocentric Ecliptic Latitude: {coordinates[1]}")
         print(f"Distance from Earth: {coordinates[2]}")
         print()
-
+print('It worked')
